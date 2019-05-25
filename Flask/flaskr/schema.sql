@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS dictionary;
+
+CREATE TABLE dictionary (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nederlands TEXT UNIQUE NOT NULL,
+  example TEXT NOT NULL,
+  rate NUMERIC NOT NULL
+);
