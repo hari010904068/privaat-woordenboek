@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import WordCard from '@/components/WordCard'
-import WordCardMob from '@/components/WordCardMob'
+import Challenge from '@/components/Challenge'
 
 Vue.use(Router)
 
@@ -14,14 +13,9 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/test',
-      name: 'WordCard',
-      component: WordCard
-    },
-    {
-      path: '/mobile',
-      name: 'WordCardMob',
-      component: WordCardMob
+      path: '/challenge',
+      name: 'Challenge',
+      component: Challenge
     }
   ]
 })
