@@ -85,18 +85,13 @@ export default {
   },
   methods: {
     add_word(evt) {
-      console.log("invoke add word function");
       this.dialog = true;
     },
     add_word_confirm(evt) {
-      console.log("is going to send POST api");
-      console.log(evt);
-      console.log(this.form.nederlands);
       //TODO: send POST api
       this.dialog = false;
     },
     add_word_cancel(env) {
-      console.log("cancel");
       this.dialog = false;
     }
   }
