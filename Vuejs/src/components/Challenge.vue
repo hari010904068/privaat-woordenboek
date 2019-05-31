@@ -12,9 +12,9 @@
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">{{card.word}}</h3>
-                <div>example</div>
               </div>
             </v-card-title>
+            <v-card-text class="subheading-2">{{card.example}}</v-card-text>
             <v-card-actions>
               <v-btn flat icon color="blue lighten-2">
                 <v-icon>thumb_up</v-icon>
@@ -31,19 +31,31 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Challenge",
+  mounted() {
+    axios
+      .get("http://127.0.0.1:5000/show")
+      .then(
+        response => (
+          console.log(response["data"]["db_res"]),
+          (this.cards = response.data["db_res"])
+        )
+      );
+  },
   data() {
     return {
-      cards: [
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" },
-        { word: "dutch", example: "example" }
-      ]
+      // cards: [
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" },
+      //   { word: "dutch", example: "example" }
+      // ]
+      cards: null
     };
   }
 };

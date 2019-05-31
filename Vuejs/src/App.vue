@@ -1,7 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer fixed v-model="drawer" app>
-      <!-- style="width:200px !important" -->
+    <v-navigation-drawer fixed v-model="drawer" app v-if="authenticated">
       <v-list dense>
         <v-list-tile @click>
           <v-list-tile-action>
@@ -13,14 +12,19 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="teal" dark fixed app>
+    <v-toolbar color="teal" dark fixed app v-if="authenticated">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Je privaat woordenboek</v-toolbar-title>
     </v-toolbar>
+    <!-- <v-alert :value="true" type="success">This is a success alert.</v-alert> -->
     <v-content>
-      <router-view></router-view>
+      <div>
+        <v-alert v-model="submit_success" dismissible type="success">Sucessfully added a new word!</v-alert>
+        <v-alert v-model="submit_error" dismissible type="error">Oops, something went wrong!</v-alert>
+      </div>
+      <router-view @authenticated="setAuthenticated"></router-view>
     </v-content>
-    <v-footer color="teal" app inset>
+    <v-footer color="teal" app inset v-if="authenticated">
       <v-btn absolute dark fab buttom right color="pink" style="bottom:50px" @click="add_word">
         <v-icon>add</v-icon>
       </v-btn>
@@ -46,14 +50,8 @@
                 <v-flex xs12 sm12>
                   <v-text-field v-model="form.voorbeeld" label="Voorbeeld" required></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm4>
-                  <v-text-field label="ik"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm4>
-                  <v-text-field label="jij"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm4>
-                  <v-text-field label="wij"></v-text-field>
+                <v-flex xs12 sm12>
+                  <v-text-field label="note" v-model="form.note"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -70,26 +68,52 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "App",
   data() {
     const defaultForm = Object.freeze({
       nederlands: "",
-      voorbeeld: ""
+      voorbeeld: "",
+      note: ""
     });
     return {
+      submit_success: false,
+      submit_error: false,
+      authenticated: false,
       form: Object.assign({}, defaultForm),
-      drawer: null,
+      drawer: false,
       dialog: false
     };
   },
+  mounted() {
+    if (!this.authenticated) {
+      this.$router.replace({ name: "Login" });
+    }
+  },
   methods: {
+    setAuthenticated(status) {
+      this.authenticated = status;
+    },
+    logout() {
+      this.authenticated = false;
+    },
     add_word(evt) {
       this.dialog = true;
+      this.form = Object.assign({}, this.defaultForm);
     },
     add_word_confirm(evt) {
       //TODO: send POST api
       this.dialog = false;
+      console.log("add word confirm");
+      axios
+        .post("http://127.0.0.1:5000/add", {
+          nederlands: this.form.nederlands,
+          voorbeeld: this.form.voorbeeld,
+          note: this.form.note
+        })
+        .then(response => (this.submit_success = true))
+        .catch(error => console.log("error"), (this.submit_error = true));
     },
     add_word_cancel(env) {
       this.dialog = false;
@@ -97,3 +121,4 @@ export default {
   }
 };
 </script>
+
