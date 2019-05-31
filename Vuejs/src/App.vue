@@ -107,7 +107,7 @@ export default {
       this.dialog = false;
       console.log("add word confirm");
       axios
-        .post("http://127.0.0.1:5000/add", {
+        .post("http://18.191.84.104:5000/add", {
           nederlands: this.form.nederlands,
           voorbeeld: this.form.voorbeeld,
           note: this.form.note

@@ -36,7 +36,7 @@ export default {
   name: "Challenge",
   mounted() {
     axios
-      .get("http://127.0.0.1:5000/show")
+      .get("http://18.191.84.104:5000/show")
       .then(
         response => (
           console.log(response["data"]["db_res"]),
